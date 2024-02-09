@@ -14,31 +14,72 @@
    <left>
       <VBox fx:id="vbox" prefHeight="392.0" prefWidth="121.0" style="-fx-background-color: #DD1200;" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="addNewPredmetField" visible="false" />
-            <Button fx:id="addNewPredmetButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addNewPredmet" text="ADD" textAlignment="CENTER" textOverrun="LEADING_WORD_ELLIPSIS" />
-            <Label fx:id="Predmeti" text="Predmeti" textOverrun="LEADING_WORD_ELLIPSIS">
+            <Label fx:id="Predmeti" contentDisplay="TOP" prefHeight="20.0" prefWidth="127.0" text="Predmeti" textOverrun="LEADING_WORD_ELLIPSIS">
                <font>
-                  <Font name="Arial Nova" size="16.0" />
+                  <Font name="Arial Nova" size="29.0" />
                </font>
             </Label>
-            <ListView fx:id="listView" prefHeight="286.0" prefWidth="122.0" />
+            <Button fx:id="addNewPredmetButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addNewPredmet" text="ADD" textAlignment="CENTER" textOverrun="LEADING_WORD_ELLIPSIS" />
+            <TextField fx:id="addNewPredmetField" visible="false" />
+            <ListView fx:id="listView" prefHeight="357.0" prefWidth="122.0" />
          </children>
       </VBox>
    </left>
    <center>
       <AnchorPane style="-fx-background-color: #AA1220;" BorderPane.alignment="CENTER">
          <children>
-            <Text fx:id="imePredmeta" layoutX="60.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Izberi predmet">
+            <Text fx:id="imePredmeta" layoutX="31.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Izberi predmet">
                <font>
                   <Font name="Arial Nova Bold" size="24.0" />
                </font></Text>
-            <Button fx:id="startStop" layoutX="60.0" layoutY="135.0" mnemonicParsing="false" onAction="#startStop" text="Start" />
-            <Button fx:id="deleteButton" layoutX="170.0" layoutY="135.0" mnemonicParsing="false" onAction="#dellPredmet" text="DELETE" />
+            <Button fx:id="deleteButton" layoutX="214.0" layoutY="28.0" mnemonicParsing="false" onAction="#dellPredmet" text="DELETE" />
             <Text fx:id="casUcenja" layoutX="60.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CAS UCENJA" visible="false">
                <font>
                   <Font name="Arial Nova Bold" size="23.0" />
                </font>
             </Text>
+            <Button fx:id="stoparicaButton" layoutX="27.0" layoutY="155.0" mnemonicParsing="false" onAction="#stoparicaVisible" text="Stoparica" />
+            <Button fx:id="timerButton" layoutX="124.0" layoutY="155.0" mnemonicParsing="false" onAction="#timerVisible" text="Timer" />
+            <BorderPane fx:id="borderPaneTimer" layoutX="214.0" layoutY="181.0" prefHeight="110.0" prefWidth="152.0" style="-fx-background-color: blue;" visible="false">
+               <center>
+                  <AnchorPane prefHeight="110.0" prefWidth="122.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="downButton" layoutX="2.0" layoutY="73.0" mnemonicParsing="false" onAction="#downMinute" prefHeight="26.0" prefWidth="86.0" text="DOwn" />
+                        <Text fx:id="minuteTimer" layoutX="12.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00">
+                           <font>
+                              <Font size="60.0" />
+                           </font>
+                        </Text>
+                        <Button fx:id="downButton1" layoutX="6.0" layoutY="1.0" mnemonicParsing="false" onAction="#upMinute" prefHeight="26.0" prefWidth="86.0" text="UP" />
+                     </children>
+                  </AnchorPane>
+               </center>
+               <right>
+                  <VBox prefHeight="160.0" prefWidth="95.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="startEndTimerButton" mnemonicParsing="false" onAction="#startEndTimer" text="Start" />
+                        <Button fx:id="pauseResumeTimerButton" mnemonicParsing="false" text="Pause" />
+                        <Button fx:id="resetTimer" mnemonicParsing="false" onAction="#resetTimer" text="reset" />
+                     </children>
+                  </VBox>
+               </right>
+            </BorderPane>
+            <BorderPane fx:id="borderPaneStoparica" layoutX="291.0" layoutY="41.0" prefHeight="110.0" prefWidth="152.0" style="-fx-background-color: blue;" visible="false">
+               <center>
+                  <AnchorPane prefHeight="85.0" prefWidth="126.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Text fx:id="minuteStoparica" layoutX="44.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00">
+                           <font>
+                              <Font size="60.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+               </center>
+               <bottom>
+                  <Button fx:id="startStopStoparica" mnemonicParsing="false" onAction="#startStopStoparica" text="Start" BorderPane.alignment="CENTER" />
+               </bottom>
+            </BorderPane>
          </children>
       </AnchorPane>
    </center>

@@ -1,32 +1,70 @@
 package sample.stimer;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HelloController {
     private SaveData db = new SaveData();
     private boolean addNewPredmetClicked = false;
     private String currentPredmet;
     private String[] listPredmeti;
-    private boolean start = true;
     private long timestamp;
 
     @FXML
-    private TextField addNewPredmetField;
+    private BorderPane borderPaneTimer;
+    private  Timer timer;
+    private boolean isPaused = false;
+    private boolean startStopTimerClicked = false;
+    private int timerPrev;
+    private int timerPrevReset;
+    @FXML
+    private Button startEndTimerButton;
+    @FXML
+    private Button pauseResumeTimerButton;
+    @FXML
+    private Button resetTimer;
+    @FXML
+    private Button timerButton;
+    @FXML
+    private Button upButton;
+    @FXML
+    private Button downButton;
+    @FXML
+    private Text minuteTimer;
 
+
+    private boolean isStartStoparica = true;
+    @FXML
+    private Button stoparicaButton;
+    @FXML
+    private Button startStopStoparica;
+    @FXML
+    private Text minuteStoparica;
+    @FXML
+    private BorderPane borderPaneStoparica;
+    int timeStoparica=0;
+
+
+
+    @FXML
+    private TextField addNewPredmetField;
     @FXML
     private Button addNewPredmetButton;
-
     @FXML
+
     private Button deleteButton;
 
 
-    @FXML
-    private VBox vbox;
+
+
 
     @FXML
     private Text imePredmeta;
@@ -34,8 +72,9 @@ public class HelloController {
     @FXML
     private Text casUcenja;
 
-    @FXML
-    private Button startStop;
+
+
+
 
     @FXML
     private ListView<String> listView; // Specify the type for ListView
@@ -93,25 +132,61 @@ public class HelloController {
     }
 
     @FXML
-    private void startStop() throws InterruptedException {
-        if (start) {
+    private void stoparicaVisible() {
+        borderPaneTimer.setVisible(false);
+        borderPaneStoparica.setVisible(true);
+    }
+
+    @FXML
+    private void timerVisible() {
+        borderPaneStoparica.setVisible(false);
+        borderPaneTimer.setVisible(true);
+    }
+
+
+
+    @FXML
+    private void startStopStoparica() throws InterruptedException {
+        if (isStartStoparica) {
             listView.setDisable(true);
-           timestamp = System.currentTimeMillis();
-           startStop.setText("Stop");
-            System.out.println("zacel");
-            System.out.println(imePredmeta.getText());
-           start = false;
+            timerButton.setDisable(true);
+            timestamp = System.currentTimeMillis();
+            startStopStoparica.setText("Stop");
+            startStoparica();
+           isStartStoparica = false;
         }else{
-            listView.setDisable(false);
-            int time = (int) ((System.currentTimeMillis() - timestamp)/100);
+
+            int time = (int) ((System.currentTimeMillis() - timestamp)/1000);
+            System.out.println("stop "+time);
             db.updateTime(imePredmeta.getText(),time);
-            startStop.setText("Start");
-            start = true;
+            startStopStoparica.setText("Start");
+            minuteStoparica.setText("00");
+
             updateTime();
+            timeStoparica = 0;
+            listView.setDisable(false);
+            timerButton.setDisable(false);
+            timer.cancel();
+            timer.purge();
+            isStartStoparica = true;
         }
 
     }
+    private void startStoparica() {
 
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                    timeStoparica ++;
+                    Platform.runLater(() -> minuteStoparica.setText(Integer.toString(timeStoparica)));
+
+            }
+        }, 0, 1000);
+    }
+
+
+    @FXML
     private void updateTime(){
         int input = db.timeUcenja(currentPredmet);
         int numberOfDays = input / 86400;
@@ -122,5 +197,81 @@ public class HelloController {
                 numberOfDays, numberOfHours, numberOfMinutes, numberOfSeconds);
         casUcenja.setText(formattedTime);
     }
+
+    @FXML
+    private void upMinute (){
+        minuteTimer.setText(Integer.toString(Integer.parseInt(minuteTimer.getText()) + 1));
+    }
+    @FXML
+    private void downMinute (){
+        minuteTimer.setText(Integer.toString(Integer.parseInt(minuteTimer.getText()) - 1));
+    }
+
+    @FXML
+    private void startTimer() {
+        timerPrev = Integer.parseInt(minuteTimer.getText());
+        timerPrevReset = timerPrev;
+        timer = new Timer();
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (timerPrev > 0) {
+                    timerPrev--;
+                    Platform.runLater(() -> minuteTimer.setText(Integer.toString(timerPrev)));
+                } else {
+                    Platform.runLater(() -> {
+                        int time = (int) ((System.currentTimeMillis() - timestamp)/1000);
+                        System.out.println("stop "+time);
+                        db.updateTime(imePredmeta.getText(),time);
+                        updateTime();
+                        minuteTimer.setText("00");
+                        startEndTimerButton.setText("start");
+                        listView.setDisable(false);
+                        startStopTimerClicked = false;
+                        pauseResumeTimerButton.setDisable(false);
+                        timer.cancel();
+                        timer.purge();
+                    });
+                }
+            }
+        }, 0, 1000);
+    }
+
+
+    @FXML
+    private void resetTimer (){
+        minuteTimer.setText(Integer.toString(timerPrevReset));
+    }
+
+
+    @FXML
+    private void startEndTimer() {
+        if (!startStopTimerClicked && !isPaused) {
+            timestamp = System.currentTimeMillis();
+            startTimer();
+            startEndTimerButton.setText("End");
+            startStopTimerClicked = true;
+            listView.setDisable(true);
+            pauseResumeTimerButton.setDisable(true);
+        } else if (startStopTimerClicked){
+
+            int time = (int) ((System.currentTimeMillis() - timestamp)/1000);
+            System.out.println("stop "+time);
+            db.updateTime(imePredmeta.getText(),time);
+            updateTime();
+            startEndTimerButton.setText("Start");
+            minuteTimer.setText("00");
+            listView.setDisable(false);
+            startStopTimerClicked = false;
+            pauseResumeTimerButton.setDisable(false);
+            timer.cancel();
+            timer.purge();
+        }
+    }
+
+
+
+
 
 }
