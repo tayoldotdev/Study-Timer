@@ -4,16 +4,82 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-border-color: #DD1200; -fx-border-width: 4;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.stimer.HelloController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-border-radius: 4; -fx-border-color: #86A8E7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.stimer.HelloController">
    <left>
-      <VBox fx:id="vbox" prefHeight="392.0" prefWidth="121.0" style="-fx-background-color: #DD1200;" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbox" prefHeight="392.0" prefWidth="121.0" style="-fx-background-color: #F9F871;" BorderPane.alignment="CENTER">
          <children>
+            <ListView fx:id="listView" prefHeight="399.0" prefWidth="122.0" style="-fx-background-color: #F9F871;" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <AnchorPane prefHeight="398.0" prefWidth="502.0" style="-fx-background-color: #F9F871;" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="imePredmeta" layoutX="20.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Izberi predmet">
+               <font>
+                  <Font name="Arial Nova Bold" size="24.0" />
+               </font></Text>
+            <Button fx:id="deleteButton" layoutX="198.0" layoutY="27.0" mnemonicParsing="false" onAction="#dellPredmet" prefHeight="26.0" prefWidth="67.0" text="DELETE" />
+            <Text fx:id="casUcenja" layoutX="20.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cas ucenja">
+               <font>
+                  <Font name="Arial Nova Bold" size="23.0" />
+               </font>
+            </Text>
+            <Button fx:id="stoparicaButton" layoutX="198.0" layoutY="139.0" mnemonicParsing="false" onAction="#stoparicaVisible" prefHeight="26.0" prefWidth="67.0" text="Stoparica" />
+            <Button fx:id="timerButton" layoutX="198.0" layoutY="182.0" mnemonicParsing="false" onAction="#timerVisible" prefHeight="26.0" prefWidth="67.0" text="Timer" />
+            <BorderPane fx:id="borderPaneTimer" layoutX="20.0" layoutY="139.0" prefHeight="110.0" prefWidth="152.0" style="-fx-background-color: blue;" visible="false">
+               <center>
+                  <AnchorPane prefHeight="60.0" prefWidth="104.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Text fx:id="minuteTimer" layoutX="20.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00">
+                           <font>
+                              <Font size="60.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+               </center>
+               <right>
+                  <VBox prefHeight="110.0" prefWidth="48.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="startEndTimerButton" mnemonicParsing="false" onAction="#startEndTimer" prefHeight="32.0" prefWidth="48.0" text="Start" />
+                        <Button fx:id="pauseResumeTimerButton" mnemonicParsing="false" prefHeight="32.0" prefWidth="48.0" text="Pause" />
+                        <Button fx:id="resetTimer" mnemonicParsing="false" onAction="#resetTimer" prefHeight="31.0" prefWidth="48.0" text="Reset" />
+                     </children>
+                  </VBox>
+               </right>
+               <top>
+                  <Button fx:id="downButton1" mnemonicParsing="false" onAction="#upMinute" prefHeight="26.0" prefWidth="156.0" text="UP" BorderPane.alignment="CENTER" />
+               </top>
+               <bottom>
+                  <Button fx:id="downButton" mnemonicParsing="false" onAction="#downMinute" prefHeight="26.0" prefWidth="156.0" text="DOwn" BorderPane.alignment="CENTER" />
+               </bottom>
+            </BorderPane>
+            <BorderPane fx:id="borderPaneStoparica" layoutX="20.0" layoutY="139.0" prefHeight="140.0" prefWidth="152.0" style="-fx-background-color: white;" visible="false">
+               <bottom>
+                  <Button fx:id="startStopStoparica" mnemonicParsing="false" onAction="#startStopStoparica" prefHeight="26.0" prefWidth="161.0" text="Start" BorderPane.alignment="CENTER" />
+               </bottom>
+               <center>
+                  <Text fx:id="minuteStoparica" strokeType="OUTSIDE" strokeWidth="0.0" text="00" wrappingWidth="67.0875244140625" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="60.0" />
+                     </font>
+                  </Text>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <ToolBar prefHeight="35.0" prefWidth="633.0" style="-fx-background-color: #86A8E7;" BorderPane.alignment="CENTER">
+        <items>
             <Label fx:id="Predmeti" contentDisplay="TOP" prefHeight="20.0" prefWidth="127.0" text="Predmeti" textOverrun="LEADING_WORD_ELLIPSIS">
                <font>
                   <Font name="Arial Nova" size="29.0" />
@@ -21,66 +87,17 @@
             </Label>
             <Button fx:id="addNewPredmetButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addNewPredmet" text="ADD" textAlignment="CENTER" textOverrun="LEADING_WORD_ELLIPSIS" />
             <TextField fx:id="addNewPredmetField" visible="false" />
-            <ListView fx:id="listView" prefHeight="357.0" prefWidth="122.0" />
+            <TextField fx:id="addNewToDoField" visible="false" />
+            <Button fx:id="addNewToDoButton" mnemonicParsing="false" onAction="#addNewToDo" text="ADD" />
+            <Button mnemonicParsing="false" onAction="#dellToDo" text="DELETE" />
+        </items>
+      </ToolBar>
+   </top>
+   <right>
+      <VBox fx:id="vbox1" prefHeight="392.0" prefWidth="121.0" style="-fx-background-color: #F9F871;" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="toDdListView" prefHeight="399.0" prefWidth="122.0" style="-fx-background-color: #F9F871;" />
          </children>
       </VBox>
-   </left>
-   <center>
-      <AnchorPane style="-fx-background-color: #AA1220;" BorderPane.alignment="CENTER">
-         <children>
-            <Text fx:id="imePredmeta" layoutX="31.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Izberi predmet">
-               <font>
-                  <Font name="Arial Nova Bold" size="24.0" />
-               </font></Text>
-            <Button fx:id="deleteButton" layoutX="214.0" layoutY="28.0" mnemonicParsing="false" onAction="#dellPredmet" text="DELETE" />
-            <Text fx:id="casUcenja" layoutX="60.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CAS UCENJA" visible="false">
-               <font>
-                  <Font name="Arial Nova Bold" size="23.0" />
-               </font>
-            </Text>
-            <Button fx:id="stoparicaButton" layoutX="27.0" layoutY="155.0" mnemonicParsing="false" onAction="#stoparicaVisible" text="Stoparica" />
-            <Button fx:id="timerButton" layoutX="124.0" layoutY="155.0" mnemonicParsing="false" onAction="#timerVisible" text="Timer" />
-            <BorderPane fx:id="borderPaneTimer" layoutX="214.0" layoutY="181.0" prefHeight="110.0" prefWidth="152.0" style="-fx-background-color: blue;" visible="false">
-               <center>
-                  <AnchorPane prefHeight="110.0" prefWidth="122.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-                     <children>
-                        <Button fx:id="downButton" layoutX="2.0" layoutY="73.0" mnemonicParsing="false" onAction="#downMinute" prefHeight="26.0" prefWidth="86.0" text="DOwn" />
-                        <Text fx:id="minuteTimer" layoutX="12.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00">
-                           <font>
-                              <Font size="60.0" />
-                           </font>
-                        </Text>
-                        <Button fx:id="downButton1" layoutX="6.0" layoutY="1.0" mnemonicParsing="false" onAction="#upMinute" prefHeight="26.0" prefWidth="86.0" text="UP" />
-                     </children>
-                  </AnchorPane>
-               </center>
-               <right>
-                  <VBox prefHeight="160.0" prefWidth="95.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <Button fx:id="startEndTimerButton" mnemonicParsing="false" onAction="#startEndTimer" text="Start" />
-                        <Button fx:id="pauseResumeTimerButton" mnemonicParsing="false" text="Pause" />
-                        <Button fx:id="resetTimer" mnemonicParsing="false" onAction="#resetTimer" text="reset" />
-                     </children>
-                  </VBox>
-               </right>
-            </BorderPane>
-            <BorderPane fx:id="borderPaneStoparica" layoutX="291.0" layoutY="41.0" prefHeight="110.0" prefWidth="152.0" style="-fx-background-color: blue;" visible="false">
-               <center>
-                  <AnchorPane prefHeight="85.0" prefWidth="126.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-                     <children>
-                        <Text fx:id="minuteStoparica" layoutX="44.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00">
-                           <font>
-                              <Font size="60.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </AnchorPane>
-               </center>
-               <bottom>
-                  <Button fx:id="startStopStoparica" mnemonicParsing="false" onAction="#startStopStoparica" text="Start" BorderPane.alignment="CENTER" />
-               </bottom>
-            </BorderPane>
-         </children>
-      </AnchorPane>
-   </center>
+   </right>
 </BorderPane>

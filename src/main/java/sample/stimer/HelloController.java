@@ -8,14 +8,18 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class HelloController {
-    private SaveData db = new SaveData();
+    private SaveData db = new SaveData(new File("C:/Users/lukat/IdeaProjects/STimer/src/data.txt"));
+    private SaveData toDoDb = new SaveData(new File("C:/Users/lukat/IdeaProjects/STimer/src/toDoListData.txt"));
     private boolean addNewPredmetClicked = false;
+    private boolean addNewToDoClicked = false;
     private String currentPredmet;
     private String[] listPredmeti;
+    private String[] listToDo;
     private long timestamp;
 
     @FXML
@@ -59,16 +63,18 @@ public class HelloController {
     @FXML
     private Button addNewPredmetButton;
     @FXML
-
     private Button deleteButton;
 
-
-
+    @FXML
+    private TextField addNewToDoField;
+    @FXML
+    private Button addNewToDoButton;
+    @FXML
+    private Button deleteToDoButton;
 
 
     @FXML
     private Text imePredmeta;
-
     @FXML
     private Text casUcenja;
 
@@ -77,8 +83,9 @@ public class HelloController {
 
 
     @FXML
-    private ListView<String> listView; // Specify the type for ListView
-
+    private ListView<String> listView;
+    @FXML
+    private ListView<String> toDdListView;
     @FXML
     private Label Predmeti;
 
@@ -87,6 +94,9 @@ public class HelloController {
         // Initialize the list of predmeti and populate the ListView
         listPredmeti = db.getArrayListPredmetov().toArray(new String[0]);
         listView.getItems().addAll(listPredmeti);
+
+        listToDo = toDoDb.getArrayListPredmetov().toArray(new String[0]);
+        toDdListView.getItems().addAll(listToDo);
 
         // Add a listener to handle selection changes in the ListView
         listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -98,6 +108,7 @@ public class HelloController {
                 updateTime();
             }
         });
+
     }
 
     @FXML
@@ -128,6 +139,35 @@ public class HelloController {
         String delPredmet = imePredmeta.getText();
         db.delete(delPredmet);
         listView.getItems().remove(delPredmet);
+
+    }
+
+    @FXML
+    private void addNewToDo() {
+        if (!addNewToDoClicked) {
+            addNewToDoClicked = true;
+            addNewToDoField.setVisible(true);
+            addNewToDoField.setDisable(false);
+        } else {
+            String newToDo = addNewToDoField.getText();
+            if (!newToDo.equals("")){
+                toDoDb.newPredmet(newToDo);
+                toDdListView.getItems().add(newToDo);
+                addNewToDoField.clear();
+                addNewToDoField.setVisible(false);
+                addNewToDoField.setDisable(true);
+                addNewPredmetClicked = false;
+            }
+
+        }
+    }
+
+    @FXML
+    private void dellToDo() {
+        String delPredmet = toDdListView.getSelectionModel().getSelectedItem();
+        toDoDb.delete(delPredmet);
+        toDdListView.getItems().remove(delPredmet);
+
 
     }
 
@@ -193,7 +233,7 @@ public class HelloController {
         int numberOfHours = (input % 86400) / 3600 ;
         int numberOfMinutes = ((input % 86400) % 3600) / 60;
         int numberOfSeconds = ((input % 86400) % 3600) % 60;
-        String formattedTime = String.format("Cas ucenja: %d days, %d hours, %d minutes, %d seconds",
+        String formattedTime = String.format("Cas ucenja: %d dni, %d ur, %d min, %d sec",
                 numberOfDays, numberOfHours, numberOfMinutes, numberOfSeconds);
         casUcenja.setText(formattedTime);
     }

@@ -6,10 +6,18 @@ import java.util.ArrayList;
 
 public class SaveData {
     //ImePredmeta@casVsekundah
-    private File data = new File("C:/Users/lukat/IdeaProjects/STimer/src/data.txt");
-    private int numOfPredmetov = this.numOfPredmetovFun();
 
-    private ArrayList<String> arrayListPredmetov = arrayOfPredmetov();
+    private File data;
+    private int numOfPredmetov;
+
+    private ArrayList<String> arrayListPredmetov;
+
+
+    public SaveData(File data) {
+        this.data = data;
+        this.numOfPredmetov = this.numOfPredmetovFun();
+        this.arrayListPredmetov = arrayOfPredmetov();
+    }
 
     public int getNumOfPredmetov() {
         return numOfPredmetov;
@@ -18,7 +26,6 @@ public class SaveData {
     public ArrayList<String> getArrayListPredmetov() {
         return arrayListPredmetov;
     }
-
 
     public void newPredmet(String predmet) {
         try {
@@ -39,11 +46,11 @@ public class SaveData {
             FileOutputStream fileOut = new FileOutputStream(data);
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
-            numOfPredmetov ++;
+            numOfPredmetov++;
             arrayListPredmetov.add(predmet);
 
         } catch (Exception e) {
-            System.out.println("Problem reading file.");
+            System.out.println("Problem reading file. " + data.getAbsolutePath());
         }
     }
 
@@ -70,7 +77,7 @@ public class SaveData {
             fileOut.close();
 
         } catch (Exception e) {
-            System.out.println("Problem reading file.");
+            System.out.println("Problem reading file. " + data.getAbsolutePath());
         }
     }
 
@@ -91,11 +98,11 @@ public class SaveData {
             FileOutputStream fileOut = new FileOutputStream(data);
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
-            numOfPredmetov --;
+            numOfPredmetov--;
             arrayListPredmetov.remove(predmet);
 
         } catch (Exception e) {
-            System.out.println("Problem reading file.");
+            System.out.println("Problem reading file. " + data.getAbsolutePath());
         }
     }
 
@@ -125,12 +132,12 @@ public class SaveData {
 
 
         } catch (Exception e) {
-            System.out.println("Problem reading file.");
+            System.out.println("Problem reading file. " + data.getAbsolutePath());
             return -1;
         }
-        if (c <= 0){
+        if (c <= 0) {
             return -1;
-        }else return c;
+        } else return c;
     }
 
     public ArrayList<String> arrayOfPredmetov() {
@@ -147,7 +154,7 @@ public class SaveData {
             file.close();
 
         } catch (Exception e) {
-            System.out.println("Problem reading file.");
+            System.out.println("Problem reading file. " + data.getAbsolutePath());
             return null;
         }
         return arrayListPredmetov;
@@ -167,7 +174,9 @@ public class SaveData {
             }
             file.close();
         } catch (Exception e) {
-            System.out.println("Problem reading file.");}
+            System.out.println("Problem reading file. " + data.getAbsolutePath());
+
+        }
         return 0;
     }
 }
