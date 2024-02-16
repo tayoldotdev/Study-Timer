@@ -13,11 +13,19 @@ public class SaveData {
     private ArrayList<String> arrayListPredmetov;
 
 
-    public SaveData(File data) {
+    public SaveData(File data) throws IOException {
+        if (!data.exists()) {
+            if (data.createNewFile()) {
+                System.out.println("File created: " + data.getAbsolutePath());
+            } else {
+                throw new IOException("Failed to create file: " + data.getAbsolutePath());
+            }
+        }
         this.data = data;
         this.numOfPredmetov = this.numOfPredmetovFun();
         this.arrayListPredmetov = arrayOfPredmetov();
     }
+
 
     public int getNumOfPredmetov() {
         return numOfPredmetov;
@@ -48,6 +56,9 @@ public class SaveData {
             fileOut.close();
             numOfPredmetov++;
             arrayListPredmetov.add(predmet);
+            File f = new File("src/main/resources/"+predmet+".txt");
+            f.createNewFile();
+            System.out.println(f.getAbsolutePath());
 
         } catch (Exception e) {
             System.out.println("Problem reading file. " + data.getAbsolutePath());
@@ -76,6 +87,7 @@ public class SaveData {
             fileOut.write(inputBuffer.toString().getBytes());
             fileOut.close();
 
+
         } catch (Exception e) {
             System.out.println("Problem reading file. " + data.getAbsolutePath());
         }
@@ -100,6 +112,9 @@ public class SaveData {
             fileOut.close();
             numOfPredmetov--;
             arrayListPredmetov.remove(predmet);
+            File f = new File("src/main/resources/"+predmet+".txt");
+            f.delete();
+            System.out.println(f.getAbsolutePath());
 
         } catch (Exception e) {
             System.out.println("Problem reading file. " + data.getAbsolutePath());

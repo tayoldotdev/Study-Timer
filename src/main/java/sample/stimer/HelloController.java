@@ -9,12 +9,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class HelloController {
-    private SaveData db = new SaveData(new File("C:/Users/lukat/IdeaProjects/STimer/src/data.txt"));
-    private SaveData toDoDb = new SaveData(new File("C:/Users/lukat/IdeaProjects/STimer/src/toDoListData.txt"));
+    private SaveData db = new SaveData(new File("src/main/resources/data.txt"));
+   // private SaveDataToDo toDoDb = new SaveDataToDo();
     private boolean addNewPredmetClicked = false;
     private boolean addNewToDoClicked = false;
     private String currentPredmet;
@@ -89,14 +90,14 @@ public class HelloController {
     @FXML
     private Label Predmeti;
 
+    public HelloController() throws IOException {
+    }
+
     @FXML
     private void initialize() {
         // Initialize the list of predmeti and populate the ListView
         listPredmeti = db.getArrayListPredmetov().toArray(new String[0]);
         listView.getItems().addAll(listPredmeti);
-
-        listToDo = toDoDb.getArrayListPredmetov().toArray(new String[0]);
-        toDdListView.getItems().addAll(listToDo);
 
         // Add a listener to handle selection changes in the ListView
         listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -106,6 +107,12 @@ public class HelloController {
                 imePredmeta.setText(currentPredmet);
                 casUcenja.setVisible(true);
                 updateTime();
+                toDdListView.getItems().clear();
+                toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(currentPredmet));
+                addNewToDoButton.setDisable(false);
+                addNewToDoButton.setVisible(true);
+                deleteToDoButton.setDisable(false);
+                deleteToDoButton.setVisible(true);
             }
         });
 
@@ -151,12 +158,11 @@ public class HelloController {
         } else {
             String newToDo = addNewToDoField.getText();
             if (!newToDo.equals("")){
-                toDoDb.newPredmet(newToDo);
-                toDdListView.getItems().add(newToDo);
+                SaveDataToDo.newOpravilo(currentPredmet, newToDo, toDdListView);
                 addNewToDoField.clear();
                 addNewToDoField.setVisible(false);
                 addNewToDoField.setDisable(true);
-                addNewPredmetClicked = false;
+                addNewToDoClicked = false;
             }
 
         }
@@ -165,8 +171,8 @@ public class HelloController {
     @FXML
     private void dellToDo() {
         String delPredmet = toDdListView.getSelectionModel().getSelectedItem();
-        toDoDb.delete(delPredmet);
-        toDdListView.getItems().remove(delPredmet);
+        SaveDataToDo.deleteOpravilo(currentPredmet, toDdListView.getSelectionModel().getSelectedItem(), toDdListView);
+
 
 
     }
@@ -222,7 +228,7 @@ public class HelloController {
                     Platform.runLater(() -> minuteStoparica.setText(Integer.toString(timeStoparica)));
 
             }
-        }, 0, 1000);
+        }, 0, 60000);
     }
 
 
@@ -261,6 +267,7 @@ public class HelloController {
                     Platform.runLater(() -> minuteTimer.setText(Integer.toString(timerPrev)));
                 } else {
                     Platform.runLater(() -> {
+
                         int time = (int) ((System.currentTimeMillis() - timestamp)/1000);
                         System.out.println("stop "+time);
                         db.updateTime(imePredmeta.getText(),time);
@@ -275,7 +282,7 @@ public class HelloController {
                     });
                 }
             }
-        }, 0, 1000);
+        }, 0, 60000);
     }
 
 

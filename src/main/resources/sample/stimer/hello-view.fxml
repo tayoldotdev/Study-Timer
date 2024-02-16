@@ -88,8 +88,8 @@
             <Button fx:id="addNewPredmetButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addNewPredmet" text="ADD" textAlignment="CENTER" textOverrun="LEADING_WORD_ELLIPSIS" />
             <TextField fx:id="addNewPredmetField" visible="false" />
             <TextField fx:id="addNewToDoField" visible="false" />
-            <Button fx:id="addNewToDoButton" mnemonicParsing="false" onAction="#addNewToDo" text="ADD" />
-            <Button mnemonicParsing="false" onAction="#dellToDo" text="DELETE" />
+            <Button fx:id="addNewToDoButton" disable="true" mnemonicParsing="false" onAction="#addNewToDo" text="ADD" visible="false" />
+            <Button fx:id="deleteToDoButton" disable="true" mnemonicParsing="false" onAction="#dellToDo" text="DELETE" visible="false" />
         </items>
       </ToolBar>
    </top>
