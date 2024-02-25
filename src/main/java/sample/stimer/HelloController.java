@@ -15,7 +15,7 @@ import java.util.TimerTask;
 
 public class HelloController {
     private SaveData db = new SaveData(new File("src/main/resources/data.txt"));
-   // private SaveDataToDo toDoDb = new SaveDataToDo();
+    private MyTimer myTimer = new MyTimer();
     private boolean addNewPredmetClicked = false;
     private boolean addNewToDoClicked = false;
     private String currentPredmet;
@@ -55,34 +55,24 @@ public class HelloController {
     private Text minuteStoparica;
     @FXML
     private BorderPane borderPaneStoparica;
-    int timeStoparica=0;
-
-
-
     @FXML
     private TextField addNewPredmetField;
     @FXML
     private Button addNewPredmetButton;
     @FXML
     private Button deleteButton;
-
     @FXML
     private TextField addNewToDoField;
     @FXML
     private Button addNewToDoButton;
     @FXML
     private Button deleteToDoButton;
-
-
+    @FXML
+    private Button checkUncheckButton;
     @FXML
     private Text imePredmeta;
     @FXML
     private Text casUcenja;
-
-
-
-
-
     @FXML
     private ListView<String> listView;
     @FXML
@@ -113,8 +103,13 @@ public class HelloController {
                 addNewToDoButton.setVisible(true);
                 deleteToDoButton.setDisable(false);
                 deleteToDoButton.setVisible(true);
+                deleteButton.setVisible(true);
+                casUcenja.setVisible(true);
+                stoparicaButton.setVisible(true);
+                timerButton.setVisible(true);
             }
         });
+
 
     }
 
@@ -170,11 +165,12 @@ public class HelloController {
 
     @FXML
     private void dellToDo() {
-        String delPredmet = toDdListView.getSelectionModel().getSelectedItem();
         SaveDataToDo.deleteOpravilo(currentPredmet, toDdListView.getSelectionModel().getSelectedItem(), toDdListView);
+    }
 
-
-
+    @FXML
+    private void checkUncheckToDo() {
+        SaveDataToDo.checkUncheck(currentPredmet, toDdListView.getSelectionModel().getSelectedItem(), toDdListView);
     }
 
     @FXML
@@ -198,38 +194,24 @@ public class HelloController {
             timerButton.setDisable(true);
             timestamp = System.currentTimeMillis();
             startStopStoparica.setText("Stop");
-            startStoparica();
-           isStartStoparica = false;
+            myTimer.startStoparica(minuteStoparica);
+            isStartStoparica = false;
         }else{
 
             int time = (int) ((System.currentTimeMillis() - timestamp)/1000);
+            myTimer.endStoparica(minuteStoparica);
             System.out.println("stop "+time);
             db.updateTime(imePredmeta.getText(),time);
             startStopStoparica.setText("Start");
-            minuteStoparica.setText("00");
-
             updateTime();
-            timeStoparica = 0;
+
             listView.setDisable(false);
             timerButton.setDisable(false);
-            timer.cancel();
-            timer.purge();
             isStartStoparica = true;
         }
 
     }
-    private void startStoparica() {
 
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                    timeStoparica ++;
-                    Platform.runLater(() -> minuteStoparica.setText(Integer.toString(timeStoparica)));
-
-            }
-        }, 0, 60000);
-    }
 
 
     @FXML
@@ -239,7 +221,7 @@ public class HelloController {
         int numberOfHours = (input % 86400) / 3600 ;
         int numberOfMinutes = ((input % 86400) % 3600) / 60;
         int numberOfSeconds = ((input % 86400) % 3600) % 60;
-        String formattedTime = String.format("Cas ucenja: %d dni, %d ur, %d min, %d sec",
+        String formattedTime = String.format("Cas ucenja: \n%d dni, %d ur, %d min, %d sec",
                 numberOfDays, numberOfHours, numberOfMinutes, numberOfSeconds);
         casUcenja.setText(formattedTime);
     }

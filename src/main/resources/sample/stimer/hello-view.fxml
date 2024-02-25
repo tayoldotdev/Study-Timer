@@ -26,14 +26,14 @@
                <font>
                   <Font name="Arial Nova Bold" size="24.0" />
                </font></Text>
-            <Button fx:id="deleteButton" layoutX="198.0" layoutY="27.0" mnemonicParsing="false" onAction="#dellPredmet" prefHeight="26.0" prefWidth="67.0" text="DELETE" />
-            <Text fx:id="casUcenja" layoutX="20.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cas ucenja">
+            <Button fx:id="deleteButton" layoutX="198.0" layoutY="27.0" mnemonicParsing="false" onAction="#dellPredmet" prefHeight="26.0" prefWidth="67.0" text="DELETE" visible="false" />
+            <Text fx:id="casUcenja" layoutX="20.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cas ucenja" visible="false">
                <font>
                   <Font name="Arial Nova Bold" size="23.0" />
                </font>
             </Text>
-            <Button fx:id="stoparicaButton" layoutX="198.0" layoutY="139.0" mnemonicParsing="false" onAction="#stoparicaVisible" prefHeight="26.0" prefWidth="67.0" text="Stoparica" />
-            <Button fx:id="timerButton" layoutX="198.0" layoutY="182.0" mnemonicParsing="false" onAction="#timerVisible" prefHeight="26.0" prefWidth="67.0" text="Timer" />
+            <Button fx:id="stoparicaButton" layoutX="198.0" layoutY="139.0" mnemonicParsing="false" onAction="#stoparicaVisible" prefHeight="26.0" prefWidth="67.0" text="Stoparica" visible="false" />
+            <Button fx:id="timerButton" layoutX="198.0" layoutY="182.0" mnemonicParsing="false" onAction="#timerVisible" prefHeight="26.0" prefWidth="67.0" text="Timer" visible="false" />
             <BorderPane fx:id="borderPaneTimer" layoutX="20.0" layoutY="139.0" prefHeight="110.0" prefWidth="152.0" style="-fx-background-color: blue;" visible="false">
                <center>
                   <AnchorPane prefHeight="60.0" prefWidth="104.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
@@ -74,6 +74,7 @@
                   </Text>
                </center>
             </BorderPane>
+            <Button fx:id="checkUncheckButton" layoutX="289.0" layoutY="28.0" mnemonicParsing="false" onAction="#checkUncheckToDo" text="Button" />
          </children>
       </AnchorPane>
    </center>

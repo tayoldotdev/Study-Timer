@@ -11,9 +11,6 @@ public class SaveDataToDo {
         File f = new File("src/main/resources/"+predmet+".txt");
 
         try {
-            // Create a new file if it doesn't exist
-
-
             BufferedReader file = new BufferedReader(new FileReader(f));
             StringBuffer inputBuffer = new StringBuffer();
             String line;
@@ -73,7 +70,11 @@ public class SaveDataToDo {
 
             while ((line = file.readLine()) != null) {
                 String[] newLineArray = line.split("@");
-                arrayListOpravil.add(newLineArray[0]);
+                if (newLineArray[1].equals("1")) {
+                    arrayListOpravil.add("1 " +newLineArray[0]);
+                } else {
+                    arrayListOpravil.add(newLineArray[0]);
+                }
 
             }
             file.close();
@@ -83,6 +84,46 @@ public class SaveDataToDo {
             return null;
         }
         return arrayListOpravil.toArray(new String[0]);
+    }
+
+
+    public static void checkUncheck (String predmet, String currentOpravilo, ListView<String> toDdListView) {
+        String opravilo = currentOpravilo.trim().replace("1","");
+        System.out.println(opravilo);
+        File f = new File("src/main/resources/"+predmet+".txt");
+
+        try {
+            BufferedReader file = new BufferedReader(new FileReader(f));
+            StringBuffer inputBuffer = new StringBuffer();
+            String line;
+
+            while ((line = file.readLine()) != null) {
+                if (line.contains(opravilo)) {
+                    String[] newLineArray = line.split("@");
+                    if (newLineArray[1].equals("1")) {
+                        line = opravilo+"@0";
+                    } else {
+                        line = opravilo+"@1";
+                    }
+                }
+                inputBuffer.append(line);
+                inputBuffer.append('\n');
+
+            }
+            file.close();
+
+            // write the new string with the replaced line OVER the same file
+            FileOutputStream fileOut = new FileOutputStream(f);
+            fileOut.write(inputBuffer.toString().getBytes());
+            fileOut.close();
+            toDdListView.getItems().clear();
+            toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(predmet));
+
+
+        } catch (IOException e) {
+            System.out.println("Problem reading or creating file. " + f.getAbsolutePath());
+            e.printStackTrace();
+        }
     }
 
 }
