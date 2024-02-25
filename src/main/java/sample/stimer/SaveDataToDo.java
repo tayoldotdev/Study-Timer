@@ -88,7 +88,7 @@ public class SaveDataToDo {
 
 
     public static void checkUncheck (String predmet, String currentOpravilo, ListView<String> toDdListView) {
-        String opravilo = currentOpravilo.trim().replace("1","");
+        String opravilo = currentOpravilo.replace("1","").trim();
         System.out.println(opravilo);
         File f = new File("src/main/resources/"+predmet+".txt");
 
