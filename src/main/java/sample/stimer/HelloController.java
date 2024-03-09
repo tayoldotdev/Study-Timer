@@ -4,7 +4,10 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
@@ -12,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class HelloController {
     private SaveData db = new SaveData(new File("src/main/resources/data.txt"));
@@ -99,6 +103,9 @@ public class HelloController {
                 updateTime();
                 toDdListView.getItems().clear();
                 toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(currentPredmet));
+                checkUncheckButton.setDisable(false);
+                checkUncheckButton.setVisible(true);
+                checkUncheckButton.setText("☑");
                 addNewToDoButton.setDisable(false);
                 addNewToDoButton.setVisible(true);
                 deleteToDoButton.setDisable(false);
@@ -155,6 +162,8 @@ public class HelloController {
             if (!newToDo.equals("")){
                 SaveDataToDo.newOpravilo(currentPredmet, newToDo, toDdListView);
                 addNewToDoField.clear();
+                toDdListView.getItems().clear();
+                toDdListView.getItems().addAll(SaveDataToDo.arrayOpravil(currentPredmet));
                 addNewToDoField.setVisible(false);
                 addNewToDoField.setDisable(true);
                 addNewToDoClicked = false;
@@ -170,8 +179,11 @@ public class HelloController {
 
     @FXML
     private void checkUncheckToDo() {
-        SaveDataToDo.checkUncheck(currentPredmet, toDdListView.getSelectionModel().getSelectedItem(), toDdListView);
+        if (toDdListView.getSelectionModel().getSelectedItem() != null) {
+            SaveDataToDo.checkUncheck(currentPredmet, toDdListView.getSelectionModel().getSelectedItem(), toDdListView);
+        }
     }
+
 
     @FXML
     private void stoparicaVisible() {
@@ -184,7 +196,6 @@ public class HelloController {
         borderPaneStoparica.setVisible(false);
         borderPaneTimer.setVisible(true);
     }
-
 
 
     @FXML
@@ -237,8 +248,8 @@ public class HelloController {
 
     @FXML
     private void startTimer() {
-        timerPrev = Integer.parseInt(minuteTimer.getText());
-        timerPrevReset = timerPrev;
+        timerPrev = Integer.parseInt(minuteTimer.getText())+1;
+        if (! isPaused){timerPrevReset = timerPrev;}
         timer = new Timer();
 
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -282,7 +293,7 @@ public class HelloController {
             startEndTimerButton.setText("End");
             startStopTimerClicked = true;
             listView.setDisable(true);
-            pauseResumeTimerButton.setDisable(true);
+            pauseResumeTimerButton.setDisable(false);
         } else if (startStopTimerClicked){
 
             int time = (int) ((System.currentTimeMillis() - timestamp)/1000);
@@ -296,6 +307,25 @@ public class HelloController {
             pauseResumeTimerButton.setDisable(false);
             timer.cancel();
             timer.purge();
+        }
+    }
+
+    @FXML
+    private void pauseResumeTimer() {
+        if (startStopTimerClicked && !isPaused) {
+            isPaused=true;
+            int time = (int) ((System.currentTimeMillis() - timestamp)/1000);
+            db.updateTime(imePredmeta.getText(),time);
+            updateTime();
+            pauseResumeTimerButton.setText("Resume");
+        } else if (isPaused){
+            timestamp = System.currentTimeMillis();
+            startTimer();
+            startStopTimerClicked = true;
+            listView.setDisable(true);
+            pauseResumeTimerButton.setDisable(false);
+            pauseResumeTimerButton.setText("Stop");
+            isPaused=false;
         }
     }
 

@@ -71,9 +71,9 @@ public class SaveDataToDo {
             while ((line = file.readLine()) != null) {
                 String[] newLineArray = line.split("@");
                 if (newLineArray[1].equals("1")) {
-                    arrayListOpravil.add("1 " +newLineArray[0]);
+                    arrayListOpravil.add("☑ " +newLineArray[0]);
                 } else {
-                    arrayListOpravil.add(newLineArray[0]);
+                    arrayListOpravil.add("☐ "+newLineArray[0]);
                 }
 
             }
@@ -88,7 +88,7 @@ public class SaveDataToDo {
 
 
     public static void checkUncheck (String predmet, String currentOpravilo, ListView<String> toDdListView) {
-        String opravilo = currentOpravilo.replace("1","").trim();
+        String opravilo = currentOpravilo.replaceAll("[☐☑] ","");
         System.out.println(opravilo);
         File f = new File("src/main/resources/"+predmet+".txt");
 

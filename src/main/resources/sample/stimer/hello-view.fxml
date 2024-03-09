@@ -50,7 +50,7 @@
                   <VBox prefHeight="110.0" prefWidth="48.0" BorderPane.alignment="CENTER">
                      <children>
                         <Button fx:id="startEndTimerButton" mnemonicParsing="false" onAction="#startEndTimer" prefHeight="32.0" prefWidth="48.0" text="Start" />
-                        <Button fx:id="pauseResumeTimerButton" mnemonicParsing="false" prefHeight="32.0" prefWidth="48.0" text="Pause" />
+                        <Button fx:id="pauseResumeTimerButton" mnemonicParsing="false" onAction="#pauseResumeTimer" prefHeight="32.0" prefWidth="48.0" text="Pause" />
                         <Button fx:id="resetTimer" mnemonicParsing="false" onAction="#resetTimer" prefHeight="31.0" prefWidth="48.0" text="Reset" />
                      </children>
                   </VBox>
@@ -74,7 +74,7 @@
                   </Text>
                </center>
             </BorderPane>
-            <Button fx:id="checkUncheckButton" layoutX="289.0" layoutY="28.0" mnemonicParsing="false" onAction="#checkUncheckToDo" text="Button" />
+            <Button fx:id="checkUncheckButton" accessibleText="☑" disable="true" layoutX="289.0" layoutY="28.0" mnemonicParsing="false" onAction="#checkUncheckToDo" visible="false" />
          </children>
       </AnchorPane>
    </center>

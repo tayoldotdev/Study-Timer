@@ -18,7 +18,7 @@ public class MyTimer {
 
     public void startStoparica(Text minuteStoparica) {
 
-        timeStoparica = 0;
+        timeStoparica = -1;
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -26,11 +26,11 @@ public class MyTimer {
                 Platform.runLater(() -> minuteStoparica.setText(Integer.toString(timeStoparica)));
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        timer.scheduleAtFixedRate(timerTask, 0, 60000);
     }
 
     public void endStoparica(Text minuteStoparica) {
-        timeStoparica = 0;
+        timeStoparica = -1;
         timerTask.cancel();
         timer.purge();
         Platform.runLater(() -> minuteStoparica.setText("00"));
